@@ -1,0 +1,47 @@
+ASP.NET Core Lifecycle Phases (with analogy to Page LifeCycle)
+
+Application Start
+-----------------
+This happens when the application is first initialized.
+In ASP.NET Core, this is handled by the Program.cs file (in .NET 6+).
+The configuration, dependency injection, and logging setup take place here.
+Analogous Event (old ASP.NET): Application_Start() in Global.asax.
+
+Middleware Initialization
+--------------------------
+This phase sets up middleware components that handle HTTP requests. It occurs once when the application starts.
+Middleware, such as authentication, logging, static files, routing, etc., is configured here.
+Analogous Event: This is a bit similar to the old ASP.NET Application_BeginRequest in that it occurs as requests are handled but with more modularity.
+
+Request Processing and Routing
+-------------------------------
+ASP.NET Core uses routing middleware to direct the request to the appropriate endpoint (controller, Razor Page, etc.).
+The RequestDelegate for a specific endpoint is executed.
+Analogous Event: This is similar to Page_Load, but here, it’s controller and route-based.
+
+Controller/Action Execution
+---------------------------
+Once the route is matched, the appropriate controller’s action method is executed.
+Model binding happens here (binding query strings, form data, etc., to method parameters).
+Analogous Event: In the old ASP.NET MVC, this could be compared to Controller.OnActionExecuting or ActionResult execution.
+
+Filters
+--------
+Filters are used to run logic before and after actions execute.
+Types of filters include:
+Authorization filters (OnAuthorization)
+Action filters (OnActionExecuting)
+Result filters (OnResultExecuting)
+Exception filters (OnException)
+Analogous Event: In old ASP.NET, this would be closest to things like PreInit, Init, or Load.
+
+Action Result Processing
+-------------------------
+After the controller action executes, the result is processed (e.g., view rendering, JSON serialization).
+Analogous Event: In old ASP.NET, this could be compared to the Page_Render event, where the result is sent back.
+
+Response Generation
+--------------------
+The result is serialized or processed into an HTTP response.
+The response is returned to the client after going through any additional middleware.
+Analogous Event: In old ASP.NET, this could be compared to Page_Unload, where the page is rendered back to the browser.
