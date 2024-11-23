@@ -1,0 +1,85 @@
+
+In ASP.NET Core, filters are a powerful mechanism that allows you to run code at various stages of the request processing pipeline. Filters are applied to controllers and actions, 
+and they allow you to add behavior before or after action execution. 
+
+Filters are commonly used for tasks like logging, authentication, authorization, caching, and modifying the response.
+
+Types of Filters in ASP.NET Core
+--------------------------------
+
+ASP.NET Core provides several types of filters that can be used in the action lifecycle:
+
+Authorization Filters (IAuthorizationFilter):
+----------------------------------------------
+These filters are executed first in the filter pipeline.
+They are used to handle authorization logic (whether the user is authorized to access the requested resource).
+If authorization fails, they can short-circuit the pipeline and return an unauthorized result.
+
+Action Filters (IActionFilter):
+-------------------------------
+These filters are executed before and after the action method is called.
+They are commonly used for pre-processing and post-processing of requests.
+OnActionExecuting: Runs before the action executes.
+OnActionExecuted: Runs after the action executes.
+
+Result Filters (IResultFilter):
+-------------------------------
+These filters are executed before and after the result is produced by the action (e.g., when returning a view or JSON).
+OnResultExecuting: Runs before the result is executed (before rendering views or returning JSON).
+OnResultExecuted: Runs after the result has been executed.
+
+Exception Filters (IExceptionFilter):
+----------------------------------------
+These filters are executed when an unhandled exception occurs during the action execution.
+They can be used to log or handle exceptions and return a custom error response.
+
+
+Resource Filters (IResourceFilter):
+-------------------------------------
+These filters are executed before any other filters.
+They are typically used for operations like caching or manipulating the data before processing the request.
+
+Async Filters (IAsyncActionFilter, IAsyncResultFilter, IAsyncExceptionFilter):
+------------------------------------------------------------------------------
+These filters are the asynchronous versions of their synchronous counterparts.
+They are used when the logic requires asynchronous processing, such as database calls or network requests.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Order of Execution for Filters
+-------------------------------
+The order in which filters are executed is important:
+
+Authorization Filters: First (they are executed before anything else).
+Resource Filters: After authorization filters.
+Action Filters: OnActionExecuting is executed before the action method, and OnActionExecuted is executed after.
+Result Filters: OnResultExecuting is executed before the result is produced, and OnResultExecuted is executed after.
+Exception Filters: Executed when an exception is thrown during action execution.
+Filter Execution Order Example:
+
+Authorization Filter
+Resource Filter
+Action Filter (Before)
+Action Execution
+Action Filter (After)
+Result Filter (Before)
+Result Execution (e.g., View or JSON)
+Result Filter (After)
+Exception Filter (if an exception occurs)
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+Summary of Use Cases:
+-----------------------
+Filter Type	When to Use
+------------------------
+Authorization	    -    To enforce access control based on roles or permissions (e.g., [Authorize]).
+Action Filter     -    For logging, validation, and pre/post-processing of action method execution.
+Result Filter	    -    To modify the response (e.g., adding custom headers or manipulating output).
+Exception Filter	-    For global error handling (e.g., logging unhandled exceptions and returning custom error responses).
+Resource Filter	  -    For resource-related tasks like caching (e.g., checking the cache before fetching from the database).
+
+
